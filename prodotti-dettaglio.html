@@ -1,0 +1,2176 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catalogo Dettagliato | VAI FERRO BIKE – Schede tecniche bici Cavezzo</title>
+  <meta name="description"
+    content="Scopri le schede tecniche complete delle bici in negozio da VAI FERRO BIKE a Cavezzo: specifiche, taglie, colori disponibili e caratteristiche per ogni modello.">
+  <meta name="theme-color" content="#111111">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link
+    href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=cabinet-grotesk@500,700,800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ═══════════════════════════════════════════
+       LAYOUT DETTAGLIO PRODOTTO
+       ═══════════════════════════════════════════ */
+
+    /* Switcher vetrina/dettaglio */
+    .view-switcher {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: var(--space-6);
+      flex-wrap: wrap;
+    }
+
+    .view-switch-label {
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--color-text-faint);
+      margin-right: .5rem;
+    }
+
+    .view-switch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .5rem 1rem;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all 180ms ease;
+      text-decoration: none;
+    }
+
+    .view-switch-btn:hover {
+      background: var(--color-surface-offset);
+      color: var(--color-text);
+    }
+
+    .view-switch-btn.active {
+      background: var(--color-secondary);
+      color: var(--color-text-inverse);
+      border-color: var(--color-secondary);
+    }
+
+    [data-theme="dark"] .view-switch-btn.active {
+      background: var(--color-surface-offset);
+      color: var(--color-text);
+    }
+
+    .view-switch-btn svg {
+      width: .9rem;
+      height: .9rem;
+      flex-shrink: 0;
+    }
+
+    /* Griglia principale: sidebar + lista */
+    .detail-layout {
+      display: grid;
+      gap: var(--space-6);
+      align-items: start;
+      padding-bottom: var(--space-16);
+    }
+
+    /* ─── SIDEBAR FILTRI ─────────────────────── */
+    .detail-sidebar {
+      position: sticky;
+      top: calc(var(--header-h) + 1rem);
+      display: none;
+    }
+
+    .sidebar-panel {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 1.25rem;
+      overflow: hidden;
+    }
+
+    .sidebar-section {
+      padding: var(--space-5);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .sidebar-section:last-child {
+      border-bottom: none;
+    }
+
+    .sidebar-section-title {
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--color-text-faint);
+      margin-bottom: var(--space-4);
+    }
+
+    .cat-list {
+      display: grid;
+      gap: .3rem;
+    }
+
+    .cat-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .55rem .75rem;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background 150ms ease;
+      font-size: var(--text-sm);
+      font-weight: 600;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .cat-item:hover {
+      background: var(--color-surface-2);
+    }
+
+    .cat-item.active {
+      background: var(--color-primary-highlight);
+      color: var(--color-primary);
+    }
+
+    [data-theme="dark"] .cat-item.active {
+      color: var(--color-primary);
+    }
+
+    .cat-count {
+      font-size: .7rem;
+      font-weight: 800;
+      padding: .2rem .5rem;
+      border-radius: var(--radius-full);
+      background: var(--color-surface-offset);
+      color: var(--color-text-faint);
+    }
+
+    .cat-item.active .cat-count {
+      background: rgba(200, 78, 25, .18);
+      color: var(--color-primary);
+    }
+
+    /* Price range */
+    .price-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+    }
+
+    .price-chip {
+      padding: .4rem .8rem;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface-2);
+      font-size: .72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 150ms ease;
+      color: var(--color-text-muted);
+    }
+
+    .price-chip:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .price-chip.active {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #fff;
+    }
+
+    /* Brand list */
+    .brand-checks {
+      display: grid;
+      gap: .35rem;
+    }
+
+    .brand-check {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-size: var(--text-sm);
+      cursor: pointer;
+      padding: .3rem 0;
+    }
+
+    .brand-check input[type="checkbox"] {
+      width: 1rem;
+      height: 1rem;
+      accent-color: var(--color-primary);
+      cursor: pointer;
+    }
+
+    /* ─── LISTA DETTAGLIO ────────────────────── */
+    .detail-list {
+      display: grid;
+      gap: var(--space-5);
+    }
+
+    /* ─── CARD PRODOTTO DETTAGLIATA ─────────── */
+    .bike-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 1.75rem;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .3s ease;
+    }
+
+    .bike-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .bike-card-inner {
+      display: grid;
+    }
+
+    .bike-card__gallery {
+      position: relative;
+      background: var(--color-surface-2);
+      aspect-ratio: 16/10;
+      overflow: hidden;
+    }
+
+    .bike-card__gallery-fallback {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--color-surface-offset) 0%, var(--color-surface-2) 100%);
+    }
+
+    .bike-card__gallery-fallback svg {
+      width: 38%;
+      max-width: 140px;
+      opacity: .15;
+    }
+
+    /* Thumbs */
+    .bike-card__thumbs {
+      position: absolute;
+      bottom: .75rem;
+      left: .75rem;
+      display: flex;
+      gap: .4rem;
+    }
+
+    .thumb-dot {
+      width: .45rem;
+      height: .45rem;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .55);
+      transition: all .2s ease;
+    }
+
+    .thumb-dot.active {
+      width: 1.4rem;
+      border-radius: var(--radius-full);
+      background: #fff;
+    }
+
+    /* Badges */
+    .bike-card__badges {
+      position: absolute;
+      top: .9rem;
+      left: .9rem;
+      display: flex;
+      gap: .4rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: .3rem .7rem;
+      border-radius: var(--radius-full);
+      font-size: .68rem;
+      font-weight: 800;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .badge-cat {
+      background: var(--color-primary);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .18);
+    }
+
+    .badge-new {
+      background: #22c55e;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(34, 197, 94, .3);
+    }
+
+    .badge-promo {
+      background: #f59e0b;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, .3);
+    }
+
+    .badge-limited {
+      background: var(--color-secondary);
+      color: var(--color-text-inverse);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .18);
+    }
+
+    .bike-card__star {
+      position: absolute;
+      top: .9rem;
+      right: .9rem;
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, .38);
+      backdrop-filter: blur(6px);
+      display: grid;
+      place-items: center;
+    }
+
+    .bike-card__star svg {
+      width: 1rem;
+      height: 1rem;
+      color: #f3d27c;
+    }
+
+    /* Info principale */
+    .bike-card__main {
+      padding: var(--space-5) var(--space-6) var(--space-6);
+      display: grid;
+      gap: var(--space-4);
+    }
+
+    .bike-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .bike-card__id {
+      display: flex;
+      flex-direction: column;
+      gap: .2rem;
+    }
+
+    .bike-card__brand-tag {
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--color-text-faint);
+    }
+
+    .bike-card__name {
+      font-family: var(--font-display);
+      font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+      line-height: 1.05;
+      letter-spacing: -.03em;
+    }
+
+    .bike-card__price-block {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .bike-card__price {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--color-primary);
+    }
+
+    .bike-card__price-label {
+      font-size: .72rem;
+      color: var(--color-text-faint);
+      margin-top: .2rem;
+    }
+
+    /* Rating */
+    .bike-card__rating {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: var(--text-sm);
+    }
+
+    .stars {
+      display: flex;
+      gap: .15rem;
+    }
+
+    .star {
+      width: .85rem;
+      height: .85rem;
+      fill: #f3d27c;
+      color: #f3d27c;
+    }
+
+    .star.empty {
+      fill: none;
+      color: var(--color-surface-offset);
+      stroke: var(--color-surface-offset);
+      stroke-width: 1.5;
+    }
+
+    .rating-score {
+      font-weight: 700;
+      color: var(--color-text);
+    }
+
+    .rating-count {
+      color: var(--color-text-faint);
+    }
+
+    /* Descrizione */
+    .bike-card__desc {
+      color: var(--color-text-muted);
+      line-height: 1.65;
+      font-size: var(--text-sm);
+    }
+
+    /* Specs inline */
+    .bike-card__specs-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: .6rem;
+    }
+
+    .spec-inline {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      padding: .6rem .8rem;
+      border-radius: var(--radius-md);
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+    }
+
+    .spec-inline__icon {
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 50%;
+      background: var(--color-primary-highlight);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .spec-inline__icon svg {
+      width: .8rem;
+      height: .8rem;
+      color: var(--color-primary);
+    }
+
+    .spec-inline__data {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .spec-inline__val {
+      font-size: .82rem;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .spec-inline__key {
+      font-size: .65rem;
+      color: var(--color-text-faint);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-top: .1rem;
+    }
+
+    /* Taglie */
+    .bike-card__sizes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+      align-items: center;
+    }
+
+    .size-label {
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--color-text-faint);
+      margin-right: .25rem;
+    }
+
+    .size-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.2rem;
+      height: 2rem;
+      padding: 0 .65rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface-2);
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--color-text-muted);
+    }
+
+    .size-pill.avail {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+      background: var(--color-primary-highlight);
+    }
+
+    .size-pill.out {
+      opacity: .35;
+      text-decoration: line-through;
+    }
+
+    /* Colori */
+    .bike-card__colors {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      flex-wrap: wrap;
+    }
+
+    .color-swatch {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      border: 2px solid var(--color-border);
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease;
+      position: relative;
+    }
+
+    .color-swatch:hover {
+      transform: scale(1.15);
+      border-color: var(--color-text-muted);
+    }
+
+    .color-swatch.active {
+      border-color: var(--color-text);
+      outline: 2px solid var(--color-text);
+      outline-offset: 2px;
+    }
+
+    /* CTA row */
+    .bike-card__cta-row {
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+    }
+
+    .bike-card__cta-row .btn {
+      flex: 1;
+      min-width: 140px;
+    }
+
+    /* Divisore + specs complete */
+    .bike-card__specs-toggle {
+      border-top: 1px solid var(--color-border);
+      padding-top: var(--space-4);
+    }
+
+    .specs-toggle-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--color-text-muted);
+      gap: .5rem;
+    }
+
+    .specs-toggle-btn:hover {
+      color: var(--color-text);
+    }
+
+    .specs-toggle-btn svg {
+      width: 1rem;
+      height: 1rem;
+      transition: transform .25s ease;
+      flex-shrink: 0;
+    }
+
+    .specs-toggle-btn[aria-expanded="true"] svg {
+      transform: rotate(180deg);
+    }
+
+    .specs-table-wrap {
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows .3s ease;
+    }
+
+    .specs-table-wrap.open {
+      grid-template-rows: 1fr;
+    }
+
+    .specs-table-inner {
+      overflow: hidden;
+    }
+
+    .specs-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--space-4);
+      font-size: var(--text-sm);
+    }
+
+    .specs-table tr {
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .specs-table tr:last-child {
+      border-bottom: none;
+    }
+
+    .specs-table th {
+      text-align: left;
+      padding: .7rem 1rem .7rem 0;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--color-text-faint);
+      width: 40%;
+    }
+
+    .specs-table td {
+      padding: .7rem 0;
+      color: var(--color-text-muted);
+      font-weight: 500;
+    }
+
+    .specs-table td strong {
+      color: var(--color-text);
+      font-weight: 700;
+    }
+
+    /* ─── CONFRONTO ──────────────────────────── */
+    .compare-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 90;
+      background: var(--color-secondary);
+      color: var(--color-text-inverse);
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transform: translateY(100%);
+      transition: transform .35s cubic-bezier(.16, 1, .3, 1);
+      flex-wrap: wrap;
+    }
+
+    [data-theme="dark"] .compare-bar {
+      background: var(--color-surface-offset);
+      color: var(--color-text);
+    }
+
+    .compare-bar.visible {
+      transform: translateY(0);
+    }
+
+    .compare-bar__items {
+      display: flex;
+      gap: .5rem;
+      flex: 1;
+      flex-wrap: wrap;
+    }
+
+    .compare-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .35rem .8rem;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, .12);
+      font-size: var(--text-xs);
+      font-weight: 600;
+    }
+
+    .compare-chip button {
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      opacity: .7;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .compare-bar__actions {
+      display: flex;
+      gap: .5rem;
+    }
+
+    /* ─── MODAL CONFRONTO ────────────────────── */
+    .compare-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease;
+    }
+
+    .compare-modal.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .compare-modal__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, .6);
+      backdrop-filter: blur(6px);
+    }
+
+    .compare-modal__sheet {
+      position: absolute;
+      inset: 1rem;
+      background: var(--color-surface);
+      border-radius: 1.5rem;
+      overflow: auto;
+      overscroll-behavior: contain;
+      padding: var(--space-6);
+      transform: scale(.96);
+      transition: transform .3s cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .compare-modal.open .compare-modal__sheet {
+      transform: scale(1);
+    }
+
+    .compare-modal__close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+
+    .compare-modal__close svg {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--space-6);
+      font-size: var(--text-sm);
+    }
+
+    .compare-table th {
+      text-align: left;
+      padding: .85rem .75rem;
+      border-bottom: 2px solid var(--color-border);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .compare-table th:first-child {
+      font-family: var(--font-body);
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--color-text-faint);
+    }
+
+    .compare-table td {
+      padding: .75rem .75rem;
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text-muted);
+      vertical-align: top;
+    }
+
+    .compare-table td:first-child {
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--color-text-faint);
+      white-space: nowrap;
+    }
+
+    .compare-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .compare-win {
+      color: var(--color-primary);
+      font-weight: 700;
+    }
+
+    /* ─── GUIDA TAGLIE ───────────────────────── */
+    .size-guide {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 1.5rem;
+      padding: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+
+    .size-guide__title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      letter-spacing: -.03em;
+      margin-bottom: var(--space-4);
+    }
+
+    .size-guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+
+    .size-guide-table th {
+      text-align: left;
+      padding: .55rem .6rem;
+      border-bottom: 2px solid var(--color-border);
+      font-size: .68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--color-text-faint);
+    }
+
+    .size-guide-table td {
+      padding: .55rem .6rem;
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text-muted);
+    }
+
+    .size-guide-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* ─── INFO BAR ────────────────────────────── */
+    .info-bar {
+      display: grid;
+      gap: var(--space-4);
+      margin-bottom: var(--space-8);
+    }
+
+    .info-tile {
+      display: flex;
+      align-items: flex-start;
+      gap: .85rem;
+      padding: var(--space-5);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 1.2rem;
+    }
+
+    .info-tile__icon {
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: .75rem;
+      background: var(--color-primary-highlight);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .info-tile__icon svg {
+      width: 1.1rem;
+      height: 1.1rem;
+      color: var(--color-primary);
+    }
+
+    .info-tile h4 {
+      font-size: .82rem;
+      font-weight: 700;
+      margin-bottom: .2rem;
+    }
+
+    .info-tile p {
+      font-size: .78rem;
+      color: var(--color-text-muted);
+      line-height: 1.4;
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────── */
+    @media (min-width: 640px) {
+      .bike-card__specs-row {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .info-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 900px) {
+      .detail-layout {
+        grid-template-columns: 240px 1fr;
+      }
+
+      .detail-sidebar {
+        display: block;
+      }
+
+      .bike-card-inner {
+        grid-template-columns: 42% 1fr;
+      }
+
+      .bike-card__gallery {
+        aspect-ratio: auto;
+        border-radius: 0;
+        min-height: 100%;
+      }
+
+      .bike-card__specs-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1100px) {
+      .bike-card-inner {
+        grid-template-columns: 38% 1fr;
+      }
+
+      .bike-card__specs-row {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .info-bar {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    /* Checkbox confronto sulla card */
+    .compare-check-wrap {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--color-text-faint);
+      cursor: pointer;
+    }
+
+    .compare-check-wrap input {
+      accent-color: var(--color-primary);
+      width: .95rem;
+      height: .95rem;
+      cursor: pointer;
+    }
+
+    /* Etichetta disponibilità */
+    .avail-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .avail-badge::before {
+      content: '';
+      width: .45rem;
+      height: .45rem;
+      border-radius: 50%;
+      background: #22c55e;
+      display: block;
+    }
+
+    .avail-badge.limited::before {
+      background: #f59e0b;
+    }
+
+    .avail-badge.order::before {
+      background: var(--color-text-faint);
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#content">Vai al contenuto</a>
+  <div class="site-shell">
+    <div class="texture"></div>
+
+    <!-- HEADER -->
+    <header class="header" id="top">
+      <div class="container header-inner">
+        <a class="brand" href="index.html" aria-label="VAI FERRO BIKE home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="18" cy="44" r="10"></circle>
+              <circle cx="47" cy="44" r="10"></circle>
+              <path d="M18 44l10-18h10l9 18M28 26l7 0M36 26l-6 18M27 26l-7 18"></path>
+              <path d="M39 18h8"></path>
+            </svg>
+          </span>
+          <span class="brand-name"><strong>VAI FERRO BIKE</strong><span>Cavezzo · officina · e-bike</span></span>
+        </a>
+
+        <nav class="nav" aria-label="Principale">
+          <a href="servizi.html">Servizi</a>
+          <a href="officina.html">Officina</a>
+          <a href="ebike.html">E-bike</a>
+          <a href="prodotti.html" class="active">Le nostre bici</a>
+          <a href="occasioni.html">Occasioni</a>
+          <a href="chi-siamo.html">Chi siamo</a>
+          <a href="contatti.html">Contatti</a>
+        </nav>
+
+        <div class="header-actions">
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Attiva tema scuro">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+          </button>
+          <a class="btn btn-primary desktop-cta"
+            href="https://wa.me/393000000000?text=Ciao%20VAI%20FERRO%20BIKE%2C%20vorrei%20informazioni%20su%20una%20bici."
+            target="_blank" rel="noopener noreferrer">Chiedi info</a>
+          <button class="menu-toggle" type="button" aria-label="Apri menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+      <div class="container mobile-panel" id="mobilePanel">
+        <div class="mobile-panel-inner">
+          <nav class="mobile-links" aria-label="Mobile">
+            <a href="servizi.html">Servizi</a>
+            <a href="officina.html">Officina</a>
+            <a href="ebike.html">E-bike</a>
+            <a href="prodotti.html">Le nostre bici</a>
+            <a href="occasioni.html">Usato e occasioni</a>
+            <a href="chi-siamo.html">Chi siamo</a>
+            <a href="contatti.html">Contatti</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main id="content">
+
+      <!-- HERO -->
+      <section class="page-hero">
+        <div class="container page-hero-inner reveal">
+          <div class="page-hero-kicker">
+            <span class="chip">Cavezzo · Modena</span>
+            <span class="chip">Schede tecniche complete</span>
+            <span class="chip">Confronto modelli</span>
+          </div>
+          <h1 class="hero-title" style="font-size:clamp(2.4rem,6vw,5rem);">Catalogo <span class="accent">dettagliato</span>.</h1>
+          <p class="hero-lead">Specifiche complete, taglie disponibili, colori e caratteristiche tecniche per ogni bici.
+            Nessun acquisto online — siamo una vetrina: per informazioni scrivici o vieni in negozio a Cavezzo.</p>
+        </div>
+      </section>
+
+      <!-- SWITCHER VISTA -->
+      <section aria-label="Cambio visualizzazione">
+        <div class="container">
+          <div class="view-switcher reveal">
+            <span class="view-switch-label">Vista</span>
+            <a href="prodotti.html" class="view-switch-btn" id="btnCompact">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+              </svg>
+              Vetrina compatta
+            </a>
+            <a href="prodotti-dettaglio.html" class="view-switch-btn active" id="btnDetail">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="5" rx="1"/>
+                <rect x="3" y="10" width="18" height="5" rx="1"/>
+                <rect x="3" y="17" width="18" height="4" rx="1"/>
+              </svg>
+              Schede dettagliate
+            </a>
+            <span style="margin-left:auto;font-size:var(--text-xs);color:var(--color-text-faint);" id="countLabel"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- INFO BAR -->
+      <section aria-label="Informazioni servizio" style="padding-block: var(--space-5) 0;">
+        <div class="container">
+          <div class="info-bar reveal">
+            <div class="info-tile">
+              <div class="info-tile__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              </div>
+              <div>
+                <h4>Vetrina · Solo esposizione</h4>
+                <p>Non si vende online. Prezzi e disponibilità vanno confermati in negozio.</p>
+              </div>
+            </div>
+            <div class="info-tile">
+              <div class="info-tile__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+              <div>
+                <h4>Catalogo aggiornato</h4>
+                <p>Le bici in negozio cambiano spesso. Chiedi sempre la disponibilità attuale.</p>
+              </div>
+            </div>
+            <div class="info-tile">
+              <div class="info-tile__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              </div>
+              <div>
+                <h4>Consulenza gratuita</h4>
+                <p>Ti aiutiamo a scegliere la bici giusta per le tue esigenze e il tuo budget.</p>
+              </div>
+            </div>
+            <div class="info-tile">
+              <div class="info-tile__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/>
+                  <path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+                  <path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/>
+                  <path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/>
+                  <path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/>
+                  <path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/>
+                  <path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/>
+                  <path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/>
+                </svg>
+              </div>
+              <div>
+                <h4>Confronto modelli</h4>
+                <p>Seleziona fino a 3 bici per confrontare le specifiche affiancate.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LAYOUT PRINCIPALE -->
+      <section aria-label="Catalogo bici">
+        <div class="container">
+          <div class="detail-layout">
+
+            <!-- SIDEBAR -->
+            <aside class="detail-sidebar" aria-label="Filtri">
+              <div class="sidebar-panel">
+
+                <div class="sidebar-section">
+                  <p class="sidebar-section-title">Categoria</p>
+                  <div class="cat-list" id="sidebarCats">
+                    <!-- Popolato da JS -->
+                  </div>
+                </div>
+
+                <div class="sidebar-section">
+                  <p class="sidebar-section-title">Fascia prezzo</p>
+                  <div class="price-chips" id="priceChips">
+                    <button class="price-chip active" data-price="all">Tutte</button>
+                    <button class="price-chip" data-price="0-700">fino a €700</button>
+                    <button class="price-chip" data-price="700-1500">€700–1.500</button>
+                    <button class="price-chip" data-price="1500-3000">€1.500–3.000</button>
+                    <button class="price-chip" data-price="3000+">oltre €3.000</button>
+                  </div>
+                </div>
+
+                <div class="sidebar-section">
+                  <p class="sidebar-section-title">Marca</p>
+                  <div class="brand-checks" id="brandChecks">
+                    <!-- Popolato da JS -->
+                  </div>
+                </div>
+
+                <div class="sidebar-section">
+                  <button class="btn btn-secondary" style="width:100%;justify-content:center;font-size:var(--text-xs);" id="resetFiltersBtn">
+                    Azzera filtri
+                  </button>
+                </div>
+
+              </div>
+
+              <!-- Guida taglie -->
+              <div class="size-guide" style="margin-top:var(--space-5);">
+                <h2 class="size-guide__title">Guida taglie MTB</h2>
+                <table class="size-guide-table" aria-label="Guida taglie mountain bike">
+                  <thead>
+                    <tr>
+                      <th>Altezza</th>
+                      <th>Taglia</th>
+                      <th>Telaio</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>155–165 cm</td><td>XS</td><td>13–14"</td></tr>
+                    <tr><td>165–175 cm</td><td>S</td><td>15–16"</td></tr>
+                    <tr><td>175–183 cm</td><td>M</td><td>17–18"</td></tr>
+                    <tr><td>183–190 cm</td><td>L</td><td>19–20"</td></tr>
+                    <tr><td>190+ cm</td><td>XL</td><td>21–22"</td></tr>
+                  </tbody>
+                </table>
+                <p style="font-size:.7rem;color:var(--color-text-faint);margin-top:.75rem;">Misure indicative. Vieni in negozio per una prova su misura.</p>
+              </div>
+            </aside>
+
+            <!-- LISTA PRODOTTI -->
+            <div>
+              <!-- Barra filtri mobile -->
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap;margin-bottom:var(--space-5);">
+                <div style="display:flex;gap:.5rem;flex-wrap:wrap;" id="mobileFilterPills">
+                  <!-- Popolato da JS -->
+                </div>
+                <div style="display:flex;align-items:center;gap:.5rem;">
+                  <label for="detailSort" style="font-size:var(--text-xs);font-weight:700;color:var(--color-text-faint);text-transform:uppercase;letter-spacing:.08em;">Ordina</label>
+                  <select class="sort-select" id="detailSort">
+                    <option value="evidenza">In evidenza</option>
+                    <option value="az">A → Z</option>
+                    <option value="prezzo-asc">Prezzo ↑</option>
+                    <option value="prezzo-desc">Prezzo ↓</option>
+                    <option value="marca">Per marca</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="detail-list" id="detailList" role="list">
+                <!-- Popolato da JS -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA FINALE -->
+      <section class="trust-band" style="margin-top:0">
+        <div class="container trust-row reveal" style="padding-block:var(--space-10);display:grid;gap:var(--space-6)">
+          <div style="text-align:center">
+            <span class="eyebrow">Non trovi quello che cerchi?</span>
+            <h2 class="section-title reveal" style="margin:var(--space-4) auto var(--space-3);max-width:24ch;text-align:center">
+              Probabilmente ce l'abbiamo in negozio.
+            </h2>
+            <p class="section-copy reveal" style="margin-inline:auto;text-align:center">
+              Il catalogo si aggiorna spesso. Se vuoi un modello specifico, scrivici: spesso ce l'abbiamo o possiamo ordinarlo.
+            </p>
+            <div class="btn-row reveal" style="justify-content:center;margin-top:var(--space-6)">
+              <a class="btn btn-primary"
+                href="https://wa.me/393000000000?text=Ciao%20VAI%20FERRO%20BIKE%2C%20cerco%20una%20bici%20specifica%20che%20non%20vedo%20sul%20sito."
+                target="_blank" rel="noopener noreferrer">Scrivici su WhatsApp</a>
+              <a class="btn btn-secondary" href="tel:+393000000000">Chiama ora</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-grid">
+        <div>
+          <div class="brand" style="margin-bottom: 1rem;">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round">
+                <circle cx="18" cy="44" r="10"></circle>
+                <circle cx="47" cy="44" r="10"></circle>
+                <path d="M18 44l10-18h10l9 18M28 26l7 0M36 26l-6 18M27 26l-7 18"></path>
+                <path d="M39 18h8"></path>
+              </svg>
+            </span>
+            <span class="brand-name"><strong>VAI FERRO BIKE</strong><span>Negozio bici · Cavezzo</span></span>
+          </div>
+          <p>Vendita biciclette, e-bike, officina, accessori e occasioni a Cavezzo, in provincia di Modena.</p>
+        </div>
+        <div>
+          <strong>Link rapidi</strong>
+          <div class="footer-links" style="margin-top: 1rem;">
+            <a href="servizi.html">Servizi</a>
+            <a href="officina.html">Officina</a>
+            <a href="ebike.html">E-bike</a>
+            <a href="prodotti.html">Le nostre bici</a>
+            <a href="occasioni.html">Occasioni</a>
+            <a href="chi-siamo.html">Chi siamo</a>
+            <a href="contatti.html">Contatti</a>
+          </div>
+        </div>
+        <div>
+          <strong>Dati locali</strong>
+          <p style="margin-top: 1rem;">Via Volturno, 86<br>41032 Cavezzo MO</p>
+          <p style="margin-top: .75rem;"><a href="https://maps.google.com/maps?q=44.8327569,11.0342762&z=15"
+              target="_blank" rel="noopener noreferrer">Apri su Google Maps</a></p>
+        </div>
+      </div>
+    </footer>
+
+    <div class="sticky-actions" aria-label="Azioni rapide mobile">
+      <a class="btn btn-secondary" href="tel:+393000000000">Chiama</a>
+      <a class="btn btn-primary"
+        href="https://wa.me/393000000000?text=Ciao%20VAI%20FERRO%20BIKE%2C%20vorrei%20avere%20informazioni%20su%20una%20bici."
+        target="_blank" rel="noopener noreferrer">WhatsApp</a>
+    </div>
+  </div>
+
+  <!-- BARRA CONFRONTO -->
+  <div class="compare-bar" id="compareBar" aria-live="polite">
+    <div style="font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;opacity:.7;white-space:nowrap;">Confronta</div>
+    <div class="compare-bar__items" id="compareItems"></div>
+    <div class="compare-bar__actions">
+      <button class="btn btn-primary" style="min-height:40px;font-size:var(--text-xs);" id="openCompareBtn">Confronta ora</button>
+      <button class="btn btn-secondary" style="min-height:40px;font-size:var(--text-xs);background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.18);color:inherit;" id="clearCompareBtn">Annulla</button>
+    </div>
+  </div>
+
+  <!-- MODAL CONFRONTO -->
+  <div class="compare-modal" id="compareModal" role="dialog" aria-modal="true" aria-label="Confronto bici">
+    <div class="compare-modal__backdrop"></div>
+    <div class="compare-modal__sheet">
+      <button class="compare-modal__close" id="closeCompareModal" aria-label="Chiudi confronto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <h2 style="font-family:var(--font-display);font-size:1.5rem;letter-spacing:-.03em;">Confronto bici</h2>
+      <div id="compareTableWrap"></div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script>
+    /* ═══════════════════════════════════════════════════════════
+       VAI FERRO BIKE — prodotti-dettaglio.js (inline)
+       Dati demo identici a prodotti.js + UI avanzata
+       ═══════════════════════════════════════════════════════════ */
+
+    const CONFIG = {
+      WA_NUMBER: '393000000000',
+      WA_BASE_MSG: 'Ciao VAI FERRO BIKE, sono interessato a ',
+    };
+
+    /* ─── DATI DEMO ARRICCHITI ─────────────────────────────── */
+    const BIKES = [
+      {
+        id: 1,
+        nome: 'Trek Marlin 5',
+        marca: 'Trek',
+        categoria: 'MTB',
+        prezzo: 799,
+        prezzoLabel: 'da €799',
+        evidenza: true,
+        disponibilita: 'disponibile',
+        rating: 4.5,
+        recensioni: 28,
+        badge: [],
+        colori: ['#1a1a2e','#e74c3c','#2ecc71'],
+        taglie: [
+          { t:'XS', disp: false },
+          { t:'S',  disp: true  },
+          { t:'M',  disp: true  },
+          { t:'L',  disp: true  },
+          { t:'XL', disp: false },
+        ],
+        descBreve: 'Hardtail versatile per sentieri e uso misto. Forcella ammortizzata, freni a disco idraulici, cambio Shimano 21V.',
+        descCompleta: 'La Trek Marlin 5 è la scelta ideale per chi vuole avvicinarsi al mountain bike senza compromessi. Forcella SR Suntour XCT da 100mm, freni idraulici Tektro, cambio Shimano Altus 21V. Ruote 29" per un rotolamento fluido e veloce anche su sterrato.',
+        specsInline: [
+          { icon: 'fork', label: 'Forcella', val: '100mm SR Suntour' },
+          { icon: 'brake', label: 'Freni', val: 'Idraulici Tektro' },
+          { icon: 'gear', label: 'Cambio', val: 'Shimano Altus 21V' },
+          { icon: 'wheel', label: 'Ruote', val: '29"' },
+          { icon: 'weight', label: 'Peso', val: '13.8 kg' },
+          { icon: 'material', label: 'Telaio', val: 'Alluminio Alpha' },
+        ],
+        specsTable: [
+          { k:'Tipo', v:'Hardtail MTB' },
+          { k:'Telaio', v:'Alpha Silver Aluminum' },
+          { k:'Forcella', v:'SR Suntour XCT 100mm' },
+          { k:'Freni', v:'Tektro HD-M275 idraulici' },
+          { k:'Cambio post.', v:'Shimano Altus 8V' },
+          { k:'Cambio ant.', v:'Shimano Tourney 3V (21V tot.)' },
+          { k:'Cassetta', v:'Shimano 11-34T' },
+          { k:'Ruote', v:'29" / WTB ST i23' },
+          { k:'Pneumatici', v:'Bontrager XR1 29x2.20"' },
+          { k:'Sella', v:'Bontrager Arvada' },
+          { k:'Manubrio', v:'Flat bar 680mm' },
+          { k:'Peso', v:'13.8 kg (taglia M)' },
+        ],
+        note: '',
+      },
+      {
+        id: 2,
+        nome: 'Bianchi E-Omnia T',
+        marca: 'Bianchi',
+        categoria: 'E-Bike',
+        prezzo: 2499,
+        prezzoLabel: 'da €2.499',
+        evidenza: true,
+        disponibilita: 'disponibile',
+        rating: 4.8,
+        recensioni: 41,
+        badge: ['nuovo'],
+        colori: ['#0e6655','#1a1a2e','#c0392b'],
+        taglie: [
+          { t:'S',  disp: true  },
+          { t:'M',  disp: true  },
+          { t:'L',  disp: true  },
+          { t:'XL', disp: true  },
+        ],
+        descBreve: 'E-bike da trekking con motore Bosch Active Line Plus. Autonomia fino a 120km, display integrato Purion.',
+        descCompleta: 'La Bianchi E-Omnia T unisce il fascino del brand storico alla tecnologia moderna. Motore Bosch Active Line Plus 50Nm, batteria 500Wh integrata nel tubo obliquo, display Purion. Perfetta per pendolari e appassionati di cicloturismo che vogliono arrivare freschi a destinazione.',
+        specsInline: [
+          { icon: 'motor', label: 'Motore', val: 'Bosch Active Plus' },
+          { icon: 'battery', label: 'Batteria', val: '500Wh' },
+          { icon: 'range', label: 'Autonomia', val: 'fino a 120km' },
+          { icon: 'display', label: 'Display', val: 'Purion' },
+          { icon: 'weight', label: 'Peso', val: '22.4 kg' },
+          { icon: 'gear', label: 'Cambio', val: 'Shimano Deore 10V' },
+        ],
+        specsTable: [
+          { k:'Tipo', v:'E-Bike Trekking' },
+          { k:'Telaio', v:'Alluminio 6061' },
+          { k:'Motore', v:'Bosch Active Line Plus 250W / 50Nm' },
+          { k:'Batteria', v:'Bosch PowerTube 500Wh' },
+          { k:'Autonomia', v:'fino a 120km (Eco)' },
+          { k:'Display', v:'Bosch Purion' },
+          { k:'Cambio', v:'Shimano Deore 10V' },
+          { k:'Freni', v:'Shimano BR-MT200 idraulici' },
+          { k:'Ruote', v:'28" / WTB ST i23' },
+          { k:'Pneumatici', v:'Schwalbe Smart Sam 700x40c' },
+          { k:'Peso', v:'22.4 kg (taglia M)' },
+          { k:'Carica completa', v:'~4h 30min' },
+        ],
+        note: 'Disponibile in più taglie. Chiedere disponibilità colori in negozio.',
+      },
+      {
+        id: 3,
+        nome: 'Trek Checkpoint ALR 5',
+        marca: 'Trek',
+        categoria: 'Gravel',
+        prezzo: 1299,
+        prezzoLabel: 'da €1.299',
+        evidenza: true,
+        disponibilita: 'disponibile',
+        rating: 4.7,
+        recensioni: 19,
+        badge: ['promo'],
+        colori: ['#2c3e50','#7f8c8d','#1abc9c'],
+        taglie: [
+          { t:'47',  disp: true  },
+          { t:'50',  disp: true  },
+          { t:'54',  disp: true  },
+          { t:'58',  disp: true  },
+          { t:'62',  disp: false },
+        ],
+        descBreve: 'Gravel bike da avventura per lunghe uscite su strade bianche. Forcella IsoSpeed, compatibile con pneumatici 45mm.',
+        descCompleta: 'La Trek Checkpoint ALR 5 è costruita per chi vuole esplorare senza limiti. Telaio Alpha Platinum Aluminium, forcella full carbon IsoSpeed per assorbire le vibrazioni, compatibilità con pneumatici fino a 45mm. Attacchi per portapacchi e borse laterali integrabili. La bici perfetta per bikepacking.',
+        specsInline: [
+          { icon: 'fork', label: 'Forcella', val: 'Full carbon IsoSpeed' },
+          { icon: 'brake', label: 'Freni', val: 'Shimano GRX 400' },
+          { icon: 'gear', label: 'Cambio', val: 'Shimano GRX 20V' },
+          { icon: 'wheel', label: 'Ruote', val: '700c / 650b' },
+          { icon: 'weight', label: 'Peso', val: '9.5 kg' },
+          { icon: 'tire', label: 'Pneumatici', val: 'fino a 45mm' },
+        ],
+        specsTable: [
+          { k:'Tipo', v:'Gravel / Avventura' },
+          { k:'Telaio', v:'Alpha Platinum Aluminium' },
+          { k:'Forcella', v:'Carbon IsoSpeed Gravel' },
+          { k:'Freni', v:'Shimano GRX 400 idraulici' },
+          { k:'Gruppo', v:'Shimano GRX 400 20V' },
+          { k:'Cassetta', v:'Shimano 11-34T' },
+          { k:'Ruote', v:'700c Bontrager Tubeless' },
+          { k:'Pneumatici', v:'Bontrager GR1 Team Issue 700x40c' },
+          { k:'Compatibilità', v:'700c fino a 45mm / 650b fino a 50mm' },
+          { k:'Attacchi', v:'Portapacchi, borse lat., fender' },
+          { k:'Peso', v:'9.5 kg (taglia 54)' },
+          { k:'Colori', v:'Matte Dnister Black / Cobra Blood' },
+        ],
+        note: 'Promozione valida fino a esaurimento scorte.',
+      },
+      {
+        id: 4,
+        nome: 'KTM Macina Charm',
+        marca: 'KTM',
+        categoria: 'E-Bike',
+        prezzo: 2199,
+        prezzoLabel: 'da €2.199',
+        evidenza: true,
+        disponibilita: 'disponibile',
+        rating: 4.6,
+        recensioni: 33,
+        badge: [],
+        colori: ['#2c3e50','#bdc3c7','#e67e22'],
+        taglie: [
+          { t:'XS', disp: true  },
+          { t:'S',  disp: true  },
+          { t:'M',  disp: true  },
+          { t:'L',  disp: true  },
+        ],
+        descBreve: 'E-bike da città elegante con motore Bosch e design premium. Cambio Nexus 8V, freni idraulici, luci integrate.',
+        descCompleta: 'La KTM Macina Charm è la e-bike per chi vuole muoversi in città con classe senza rinunciare alla tecnologia. Motore Bosch Active Line Plus 50Nm, batteria 400Wh integrata nel tubo obliquo, display Purion. Cambio Shimano Nexus 8 velocità interno, freni idraulici, luci a LED integrate.',
+        specsInline: [
+          { icon: 'motor', label: 'Motore', val: 'Bosch Active Plus 50Nm' },
+          { icon: 'battery', label: 'Batteria', val: '400Wh' },
+          { icon: 'gear', label: 'Cambio', val: 'Shimano Nexus 8V' },
+          { icon: 'light', label: 'Luci', val: 'LED integrate' },
+          { icon: 'weight', label: 'Peso', val: '20.5 kg' },
+          { icon: 'brake', label: 'Freni', val: 'Idraulici' },
+        ],
+        specsTable: [
+          { k:'Tipo', v:'E-Bike City' },
+          { k:'Telaio', v:'Alluminio butted' },
+          { k:'Motore', v:'Bosch Active Line Plus 250W / 50Nm' },
+          { k:'Batteria', v:'Bosch PowerTube 400Wh' },
+          { k:'Autonomia', v:'fino a 90km (Eco)' },
+          { k:'Display', v:'Bosch Purion' },
+          { k:'Cambio', v:'Shimano Nexus 8V interno' },
+          { k:'Freni', v:'Magura MT2 idraulici 4 pistoni' },
+          { k:'Ruote', v:'28" DT Swiss' },
+          { k:'Luci', v:'Supernova LED anteriore + posteriore' },
+          { k:'Parafanghi', v:'Inclusi' },
+          { k:'Peso', v:'20.5 kg (taglia M)' },
+        ],
+        note: '',
+      },
+      {
+        id: 5,
+        nome: 'Specialized Allez',
+        marca: 'Specialized',
+        categoria: 'Corsa',
+        prezzo: 999,
+        prezzoLabel: 'da €999',
+        evidenza: false,
+        disponibilita: 'disponibile',
+        rating: 4.4,
+        recensioni: 15,
+        badge: [],
+        colori: ['#e74c3c','#2c3e50','#f1c40f'],
+        taglie: [
+          { t:'49',  disp: true  },
+          { t:'52',  disp: true  },
+          { t:'54',  disp: false },
+          { t:'56',  disp: true  },
+          { t:'58',  disp: true  },
+          { t:'61',  disp: false },
+        ],
+        descBreve: 'Bici da corsa entry-level con geometria aggressiva e forcella in carbonio. Cambio Shimano Claris 16V.',
+        descCompleta: 'La Specialized Allez è la porta di ingresso al mondo della corsa senza compromessi. Telaio E5 Premium Aluminum progettato in casa Specialized, forcella in carbonio per assorbire le vibrazioni, cambio Shimano Claris 16V, cerchi in alluminio profilati. Veloce, reattiva, precisa.',
+        specsInline: [
+          { icon: 'fork', label: 'Forcella', val: 'Full carbon' },
+          { icon: 'gear', label: 'Cambio', val: 'Shimano Claris 16V' },
+          { icon: 'wheel', label: 'Ruote', val: '700c profilati' },
+          { icon: 'weight', label: 'Peso', val: '9.7 kg' },
+          { icon: 'material', label: 'Telaio', val: 'E5 Aluminum' },
+          { icon: 'brake', label: 'Freni', val: 'Rim brake' },
+        ],
+        specsTable: [
+          { k:'Tipo', v:'Bici da corsa' },
+          { k:'Telaio', v:'Specialized E5 Premium Aluminum' },
+          { k:'Forcella', v:'Specialized FACT Carbon' },
+          { k:'Gruppo', v:'Shimano Claris R2000 16V' },
+          { k:'Cassetta', v:'Shimano 11-28T' },
+          { k:'Freni', v:'Promax RC-482 rim brake' },
+          { k:'Ruote', v:'Axis Sport profilate 700c' },
+          { k:'Pneumatici', v:'Specialized Espoir Sport 700x28c' },
+          { k:'Manubrio', v:'Specialized Shallow Drop' },
+          { k:'Peso', v:'9.7 kg (taglia 54)' },
+          { k:'Geometria', v:'Endurance (confort + prestazioni)' },
+          { k:'Colori', v:'Gloss Flo Red / Gloss Black' },
+        ],
+        note: '',
+      },
+      {
+        id: 6,
+        nome: 'Cube Nature',
+        marca: 'Cube',
+        categoria: 'Trekking',
+        prezzo: 699,
+        prezzoLabel: 'da €699',
+        evidenza: false,
+        disponibilita: 'disponibile',
+        rating: 4.3,
+        recensioni: 22,
+        badge: [],
+        colori: ['#1a1a2e','#16a085','#95a5a6'],
+        taglie: [
+          { t:'XS', disp: true  },
+          { t:'S',  disp: true  },
+          { t:'M',  disp: true  },
+          { t:'L',  disp: true  },
+          { t:'XL', disp: true  },
+        ],
+        descBreve: 'Bici da trekking polivalente con portapacchi incluso. Pneumatici 700x42c per aderenza su tutti i fondi.',
+        descCompleta: 'La Cube Nature è progettata per chi ama pedalare senza limiti. Telaio in alluminio leggero, forcella rigida, pneumatici 700x42c per aderenza su tutti i fondi. Portapacchi posteriore e parafanghi inclusi di serie. Cambio Shimano 24V per affrontare qualsiasi pendenza.',
+        specsInline: [
+          { icon: 'tire', label: 'Pneumatici', val: '700x42c' },
+          { icon: 'gear', label: 'Cambio', val: 'Shimano 24V' },
+          { icon: 'rack', label: 'Accessori', val: 'Portapacchi + parafanghi' },
+          { icon: 'weight', label: 'Peso', val: '12.5 kg' },
+          { icon: 'material', label: 'Telaio', val: 'Alluminio' },
+          { icon: 'brake', label: 'Freni', val: 'V-Brake Tektro' },
+        ],
+        specsTable: [
+          { k:'Tipo', v:'Trekking' },
+          { k:'Telaio', v:'Cube Aluminum' },
+          { k:'Forcella', v:'Cube Cross Steel rigida' },
+          { k:'Freni', v:'Tektro M310 V-Brake' },
+          { k:'Cambio post.', v:'Shimano Acera 8V' },
+          { k:'Cambio ant.', v:'Shimano Acera 3V (24V tot.)' },
+          { k:'Cassetta', v:'Shimano 11-34T' },
+          { k:'Ruote', v:'700c Cube / Shimano' },
+          { k:'Pneumatici', v:'Schwalbe Smart Sam 700x42c' },
+          { k:'Accessori', v:'Portapacchi, parafanghi, cavalletto' },
+          { k:'Peso', v:'12.5 kg (taglia M)' },
+          { k:'Colori', v:'Black/Grey / Darkgreen/Black' },
+        ],
+        note: '',
+      },
+      {
+        id: 7,
+        nome: 'Scott Scale 980',
+        marca: 'Scott',
+        categoria: 'MTB',
+        prezzo: 1099,
+        prezzoLabel: 'da €1.099',
+        evidenza: false,
+        disponibilita: 'limitata',
+        rating: 4.5,
+        recensioni: 12,
+        badge: ['limitata'],
+        colori: ['#1a1a2e','#e74c3c'],
+        taglie: [
+          { t:'S',  disp: true  },
+          { t:'M',  disp: true  },
+          { t:'L',  disp: false },
+          { t:'XL', disp: false },
+        ],
+        descBreve: 'MTB hardtail con geometria moderna e aggressiva. Forcella 120mm, cambio Deore 12V, freni 4 pistoni.',
+        descCompleta: 'La Scott Scale 980 porta sul sentiero una geometria moderna e aggressiva pensata per il trail. Forcella SR Suntour XCR da 120mm, cambio Shimano Deore 12V con cassetta 10-51T, freni Shimano MT401 a 4 pistoni per una potenza frenante superiore. Ideale per chi vuole performare su terreni tecnici.',
+        specsInline: [
+          { icon: 'fork', label: 'Forcella', val: '120mm SR Suntour XCR' },
+          { icon: 'gear', label: 'Cambio', val: 'Shimano Deore 12V' },
+          { icon: 'brake', label: 'Freni', val: '4 pistoni MT401' },
+          { icon: 'wheel', label: 'Ruote', val: '29"' },
+          { icon: 'weight', label: 'Peso', val: '13.2 kg' },
+          { icon: 'material', label: 'Telaio', val: 'Scott HMF Aluminum' },
+        ],
+        specsTable: [
+          { k:'Tipo', v:'Hardtail MTB Trail' },
+          { k:'Telaio', v:'Scott HMF Aluminum' },
+          { k:'Forcella', v:'SR Suntour XCR 120mm' },
+          { k:'Freni', v:'Shimano MT401 idraulici 4 pistoni' },
+          { k:'Cambio', v:'Shimano Deore 12V' },
+          { k:'Cassetta', v:'Shimano 10-51T 12V' },
+          { k:'Guarnitura', v:'Praxis Cadet 32T' },
+          { k:'Ruote', v:'29" Scott / Alex DP23' },
+          { k:'Pneumatici', v:'Maxxis Rekon 29x2.40"' },
+          { k:'Geometria', v:'Trail moderna (BB basso, reach lungo)' },
+          { k:'Peso', v:'13.2 kg (taglia M)' },
+          { k:'Colori', v:'Black / Neon Orange' },
+        ],
+        note: 'Disponibilità limitata — solo taglie S e M.',
+      },
+      {
+        id: 8,
+        nome: 'Bottecchia Arlecchino',
+        marca: 'Bottecchia',
+        categoria: 'Usato',
+        prezzo: 380,
+        prezzoLabel: '€380',
+        evidenza: true,
+        disponibilita: 'unico',
+        rating: 5.0,
+        recensioni: 3,
+        badge: ['promo'],
+        colori: ['#c0392b','#f1c40f','#2980b9','#27ae60'],
+        taglie: [
+          { t:'54', disp: true },
+        ],
+        descBreve: 'Bici vintage anni \'80 restaurata con cura. Telaio Columbus SL, cambio Campagnolo Record. Pezzo da collezione.',
+        descCompleta: 'Un gioiello del ciclismo italiano degli anni \'80, restaurato con cura da esperti. Telaio acciaio Columbus SL in perfetta cromia, cambio Campagnolo Record 6V, cerchi Super Champion in alluminio. Cavi e guaine sostituiti. Solo per veri appassionati del ciclismo storico — esemplare unico.',
+        specsInline: [
+          { icon: 'material', label: 'Telaio', val: 'Acciaio Columbus SL' },
+          { icon: 'gear', label: 'Cambio', val: 'Campagnolo Record 6V' },
+          { icon: 'wheel', label: 'Ruote', val: 'Super Champion 28"' },
+          { icon: 'weight', label: 'Peso', val: '10.2 kg' },
+          { icon: 'fork', label: 'Forcella', val: 'Columbus acciaio' },
+          { icon: 'brake', label: 'Freni', val: 'Campagnolo sidepull' },
+        ],
+        specsTable: [
+          { k:'Anno', v:'circa 1982' },
+          { k:'Telaio', v:'Acciaio Columbus SL' },
+          { k:'Forcella', v:'Columbus acciaio cromato' },
+          { k:'Gruppo', v:'Campagnolo Record 6V' },
+          { k:'Leve freno', v:'Campagnolo' },
+          { k:'Cerchi', v:'Super Champion 28"' },
+          { k:'Piantone', v:'3ttt Mod. Record' },
+          { k:'Reggisella', v:'San Marco Concor' },
+          { k:'Taglia', v:'54 cm' },
+          { k:'Condizioni', v:'Restaurato — ottimo stato' },
+          { k:'Peso', v:'10.2 kg' },
+          { k:'Unicità', v:'Pezzo unico — esemplare singolo' },
+        ],
+        note: 'Unico esemplare disponibile. Nessun reso possibile su vintage.',
+      },
+    ];
+
+    /* ─── SCRIPT DINAMICO ─────────────────────── */
+    <script src="main.js"></script>
+    <script>
+    /* ═══════════════════════════════════════════════════════════
+       VAI FERRO BIKE — prodotti-dettaglio (inline)
+       Legge dallo stesso Google Sheet di prodotti.js
+       ═══════════════════════════════════════════════════════════
+    */
+
+    const CONFIG = {
+      SHEET_ID: '1egFO7xMvKZLGTcVI_OjDq5Fjf2DgAmgFQlYHBxshmoI',
+      WA_NUMBER: '393000000000',
+      WA_BASE_MSG: 'Ciao VAI FERRO BIKE, sono interessato a ',
+    };
+
+    const DEMO_RAW = [
+      { Nome:'Trek Marlin 5', Marca:'Trek', Categoria:'MTB', Descrizione_Breve:'Hardtail versatile per sentieri e uso misto. Forcella ammortizzata, freni a disco idraulici.', Descrizione_Completa:'La Trek Marlin 5 è la scelta ideale per avvicinarsi al mountain bike. Forcella SR Suntour XCT 100mm, freni idraulici Tektro, cambio Shimano Altus 21V. Ruote 29".', Prezzo:'da €799', Prezzo_Num:'799', Disponibile:'SI', Disponibilita:'disponibile', In_Evidenza:'SI', Badge:'', Rating:'4.5', Recensioni:'28', Taglie:'S,M,L', Colori:'#1a1a2e,#e74c3c,#2ecc71', Immagine:'', Caratteristiche:'Forcella 100mm|Freni disco idraulici|Cambio Shimano 21V|Ruote 29"', Scheda_Tecnica:'Tipo: MTB Hardtail|Telaio: Alpha Silver Aluminum|Forcella: SR Suntour XCT 100mm|Freni: Tektro HD-M275 idraulici|Cambio: Shimano Altus 8V|Cassetta: Shimano 11-34T|Ruote: 29" WTB ST i23|Pneumatici: Bontrager XR1 29x2.20"|Peso: 13.8 kg (taglia M)', Note:'' },
+      { Nome:'Bianchi E-Omnia T', Marca:'Bianchi', Categoria:'E-Bike', Descrizione_Breve:'E-bike da trekking con motore Bosch Active Line Plus. Autonomia fino a 120km, display integrato.', Descrizione_Completa:'La Bianchi E-Omnia T unisce il fascino del brand storico alla tecnologia moderna. Motore Bosch Active Line Plus 50Nm, batteria 500Wh, display Purion.', Prezzo:'da €2.499', Prezzo_Num:'2499', Disponibile:'SI', Disponibilita:'disponibile', In_Evidenza:'SI', Badge:'nuovo', Rating:'4.8', Recensioni:'41', Taglie:'S,M,L,XL', Colori:'#0e6655,#1a1a2e,#c0392b', Immagine:'', Caratteristiche:'Motore Bosch|Batteria 500Wh|Autonomia ~120km|Display Purion', Scheda_Tecnica:'Tipo: E-Bike Trekking|Telaio: Alluminio 6061|Motore: Bosch Active Line Plus 250W / 50Nm|Batteria: Bosch PowerTube 500Wh|Autonomia: fino a 120km (Eco)|Display: Bosch Purion|Cambio: Shimano Deore 10V|Freni: Shimano BR-MT200 idraulici|Ruote: 28" WTB ST i23|Pneumatici: Schwalbe Smart Sam 700x40c|Peso: 22.4 kg (taglia M)|Carica completa: ~4h 30min', Note:'Disponibile in più taglie' },
+      { Nome:'Trek Checkpoint ALR 5', Marca:'Trek', Categoria:'Gravel', Descrizione_Breve:'Gravel bike da avventura. Forcella IsoSpeed, compatibile con pneumatici 45mm.', Descrizione_Completa:'La Trek Checkpoint ALR 5 è costruita per chi vuole esplorare. Telaio Alpha Platinum Aluminium, forcella full carbon IsoSpeed, attacchi per borse bikepacking.', Prezzo:'da €1.299', Prezzo_Num:'1299', Disponibile:'SI', Disponibilita:'disponibile', In_Evidenza:'SI', Badge:'promo', Rating:'4.7', Recensioni:'19', Taglie:'47,50,54,58', Colori:'#2c3e50,#7f8c8d,#1abc9c', Immagine:'', Caratteristiche:'Forcella IsoSpeed|Pneumatici 40mm|Cambio Shimano GRX|Attacchi borse', Scheda_Tecnica:'Tipo: Gravel / Avventura|Telaio: Alpha Platinum Aluminium|Forcella: Carbon IsoSpeed Gravel|Freni: Shimano GRX 400 idraulici|Gruppo: Shimano GRX 400 20V|Cassetta: Shimano 11-34T|Ruote: 700c Bontrager Tubeless|Pneumatici: Bontrager GR1 Team Issue 700x40c|Compatibilità: 700c fino a 45mm|Attacchi: Portapacchi, borse laterali, fender|Peso: 9.5 kg (taglia 54)', Note:'Promozione valida fino a esaurimento scorte' },
+      { Nome:'KTM Macina Charm', Marca:'KTM', Categoria:'E-Bike', Descrizione_Breve:'E-bike da città elegante con motore Bosch. Cambio Nexus 8V, freni idraulici, luci integrate.', Descrizione_Completa:'La KTM Macina Charm è la e-bike per chi vuole muoversi in città con classe. Motore Bosch Active Line Plus 50Nm, batteria 400Wh integrata, display Purion.', Prezzo:'da €2.199', Prezzo_Num:'2199', Disponibile:'SI', Disponibilita:'disponibile', In_Evidenza:'SI', Badge:'', Rating:'4.6', Recensioni:'33', Taglie:'XS,S,M,L', Colori:'#2c3e50,#bdc3c7,#e67e22', Immagine:'', Caratteristiche:'Motore Bosch|Batteria 400Wh|Cambio Nexus 8V|Luci LED integrate', Scheda_Tecnica:'Tipo: E-Bike City|Telaio: Alluminio butted|Motore: Bosch Active Line Plus 250W / 50Nm|Batteria: Bosch PowerTube 400Wh|Autonomia: fino a 90km (Eco)|Display: Bosch Purion|Cambio: Shimano Nexus 8V interno|Freni: Magura MT2 idraulici 4 pistoni|Ruote: 28" DT Swiss|Luci: Supernova LED ant. + post.|Parafanghi: Inclusi|Peso: 20.5 kg (taglia M)', Note:'' },
+      { Nome:'Specialized Allez', Marca:'Specialized', Categoria:'Corsa', Descrizione_Breve:'Bici da corsa entry-level con forcella carbonio. Cambio Shimano Claris 16V.', Descrizione_Completa:'La Specialized Allez è la porta di ingresso al mondo della corsa. Telaio E5 Premium Aluminum, forcella carbonio, cambio Shimano Claris 16V.', Prezzo:'da €999', Prezzo_Num:'999', Disponibile:'SI', Disponibilita:'disponibile', In_Evidenza:'NO', Badge:'', Rating:'4.4', Recensioni:'15', Taglie:'49,52,56,58', Colori:'#e74c3c,#2c3e50,#f1c40f', Immagine:'', Caratteristiche:'Telaio E5 Aluminum|Forcella carbonio|Cambio Claris 16V|Peso 9.7kg', Scheda_Tecnica:'Tipo: Bici da corsa|Telaio: E5 Premium Aluminum|Forcella: Specialized FACT Carbon|Gruppo: Shimano Claris R2000 16V|Cassetta: Shimano 11-28T|Freni: Promax RC-482 rim brake|Ruote: Axis Sport profilate 700c|Pneumatici: Specialized Espoir Sport 700x28c|Peso: 9.7 kg (taglia 54)', Note:'' },
+      { Nome:'Cube Nature', Marca:'Cube', Categoria:'Trekking', Descrizione_Breve:'Bici da trekking con portapacchi e parafanghi inclusi. Pneumatici 700x42c.', Descrizione_Completa:'La Cube Nature è progettata per chi ama pedalare senza limiti. Telaio alluminio, pneumatici 700x42c, portapacchi e parafanghi di serie.', Prezzo:'da €699', Prezzo_Num:'699', Disponibile:'SI', Disponibilita:'disponibile', In_Evidenza:'NO', Badge:'', Rating:'4.3', Recensioni:'22', Taglie:'XS,S,M,L,XL', Colori:'#1a1a2e,#16a085,#95a5a6', Immagine:'', Caratteristiche:'Telaio alluminio|Pneumatici 700x42c|Cambio Shimano 24V|Portapacchi incluso', Scheda_Tecnica:'Tipo: Trekking|Telaio: Cube Aluminum|Forcella: Cube Cross Steel rigida|Freni: Tektro M310 V-Brake|Cambio post.: Shimano Acera 8V|Cambio ant.: Shimano Acera 3V (24V tot.)|Cassetta: Shimano 11-34T|Ruote: 700c Cube|Pneumatici: Schwalbe Smart Sam 700x42c|Accessori: Portapacchi, parafanghi, cavalletto|Peso: 12.5 kg (taglia M)', Note:'' },
+      { Nome:'Scott Scale 980', Marca:'Scott', Categoria:'MTB', Descrizione_Breve:'MTB hardtail con geometria aggressiva. Forcella 120mm, cambio Deore 12V.', Descrizione_Completa:'La Scott Scale 980 porta sul sentiero una geometria moderna per il trail. Forcella SR Suntour XCR 120mm, cambio Shimano Deore 12V, freni MT401 4 pistoni.', Prezzo:'da €1.099', Prezzo_Num:'1099', Disponibile:'SI', Disponibilita:'limitata', In_Evidenza:'NO', Badge:'limitata', Rating:'4.5', Recensioni:'12', Taglie:'S,M', Colori:'#1a1a2e,#e74c3c', Immagine:'', Caratteristiche:'Forcella 120mm|Cambio Deore 12V|Freni 4 pistoni|Geometria trail', Scheda_Tecnica:'Tipo: Hardtail MTB Trail|Telaio: Scott HMF Aluminum|Forcella: SR Suntour XCR 120mm|Freni: Shimano MT401 idraulici 4 pistoni|Cambio: Shimano Deore 12V|Cassetta: Shimano 10-51T 12V|Guarnitura: Praxis Cadet 32T|Ruote: 29" Scott / Alex DP23|Pneumatici: Maxxis Rekon 29x2.40"|Peso: 13.2 kg (taglia M)', Note:'Disponibilità limitata — solo taglie S e M' },
+      { Nome:'Bottecchia Arlecchino', Marca:'Bottecchia', Categoria:'Usato', Descrizione_Breve:'Bici vintage anni \'80 restaurata. Telaio Columbus SL, cambio Campagnolo Record.', Descrizione_Completa:'Un gioiello del ciclismo italiano degli anni \'80, restaurato con cura. Telaio acciaio Columbus SL, cambio Campagnolo Record 6V, cerchi Super Champion.', Prezzo:'€380', Prezzo_Num:'380', Disponibile:'SI', Disponibilita:'unico', In_Evidenza:'SI', Badge:'promo', Rating:'5.0', Recensioni:'3', Taglie:'54', Colori:'#c0392b,#f1c40f,#2980b9,#27ae60', Immagine:'', Caratteristiche:'Telaio Columbus SL|Cambio Campagnolo|Restaurata|Pezzo da collezione', Scheda_Tecnica:'Anno: circa 1982|Telaio: Acciaio Columbus SL|Forcella: Columbus acciaio cromato|Gruppo: Campagnolo Record 6V|Leve freno: Campagnolo|Cerchi: Super Champion 28"|Taglia: 54 cm|Condizioni: Restaurato — ottimo stato|Peso: 10.2 kg|Unicità: Pezzo unico — esemplare singolo', Note:'Unico esemplare disponibile. Nessun reso possibile su vintage.' },
+    ];
+
+    async function fetchFromSheet() {
+      if (!CONFIG.SHEET_ID || CONFIG.SHEET_ID === 'YOUR_SHEET_ID_HERE') return null;
+      const url = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/export?format=csv&gid=0`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.text();
+    }
+
+    function parseLine(line) {
+      const result = []; let cur = ''; let inQ = false;
+      for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (ch === '"') { if (inQ && line[i+1] === '"') { cur += '"'; i++; } else { inQ = !inQ; } }
+        else if (ch === ',' && !inQ) { result.push(cur); cur = ''; }
+        else { cur += ch; }
+      }
+      result.push(cur);
+      return result;
+    }
+
+    function parseCSV(csvText) {
+      const lines = csvText.trim().split('\n');
+      if (lines.length < 2) return [];
+      const headers = parseLine(lines[0]);
+      return lines.slice(1).map(line => {
+        const values = parseLine(line);
+        const obj = {};
+        headers.forEach((h, i) => { obj[h.trim()] = (values[i] || '').trim(); });
+        return obj;
+      }).filter(b => b.Nome);
+    }
+
+    let _bikeCounter = 0;
+    function rawToBike(r) {
+      _bikeCounter++;
+      const taglie = r.Taglie ? r.Taglie.split(',').map(t => ({ t: t.trim(), disp: true })) : [];
+      const colori = r.Colori ? r.Colori.split(',').map(c => c.trim()).filter(c => c) : [];
+      const badge = r.Badge ? r.Badge.split(',').map(b => b.trim()).filter(b => b) : [];
+      const specsTable = r.Scheda_Tecnica ? r.Scheda_Tecnica.split('|').map(entry => {
+        const idx = entry.indexOf(':');
+        if (idx === -1) return null;
+        return { k: entry.slice(0, idx).trim(), v: entry.slice(idx + 1).trim() };
+      }).filter(Boolean) : [];
+      const specsInline = r.Caratteristiche ? r.Caratteristiche.split('|').slice(0, 6).map(c => {
+        const parts = c.split(':');
+        if (parts.length >= 2) return { icon: guessIcon(parts[0].trim()), label: parts[0].trim(), val: parts.slice(1).join(':').trim() };
+        return { icon: 'gear', label: 'Spec', val: c.trim() };
+      }) : [];
+      return {
+        id: _bikeCounter,
+        nome: r.Nome || '',
+        marca: r.Marca || '',
+        categoria: r.Categoria || '',
+        prezzo: parseFloat((r.Prezzo_Num || '0').replace(/[^\d.]/g, '')) || 0,
+        prezzoLabel: r.Prezzo || 'Su richiesta',
+        evidenza: (r.In_Evidenza || '').toUpperCase() === 'SI',
+        disponibilita: (r.Disponibilita || 'disponibile').toLowerCase(),
+        rating: parseFloat(r.Rating || '0') || 0,
+        recensioni: parseInt(r.Recensioni || '0') || 0,
+        badge, colori, taglie,
+        descBreve: r.Descrizione_Breve || '',
+        descCompleta: r.Descrizione_Completa || r.Descrizione_Breve || '',
+        specsInline, specsTable,
+        note: r.Note || '',
+        immagini: r.Immagine ? r.Immagine.split(/[|,]/).map(u => u.trim()).filter(u => u.startsWith('http')) : [],
+      };
+    }
+
+    function guessIcon(label) {
+      const l = label.toLowerCase();
+      if (l.includes('forcell') || l.includes('ammort')) return 'fork';
+      if (l.includes('fren') || l.includes('disco')) return 'brake';
+      if (l.includes('cambio') || l.includes('shimano')) return 'gear';
+      if (l.includes('ruot') || l.includes('cerch')) return 'wheel';
+      if (l.includes('peso') || l.includes('kg')) return 'weight';
+      if (l.includes('telaio') || l.includes('carbon')) return 'material';
+      if (l.includes('motor') || l.includes('bosch')) return 'motor';
+      if (l.includes('batter') || l.includes('wh')) return 'battery';
+      if (l.includes('autonom') || l.includes('km')) return 'range';
+      if (l.includes('display')) return 'display';
+      if (l.includes('luc') || l.includes('led')) return 'light';
+      if (l.includes('pneu') || l.includes('gomm')) return 'tire';
+      if (l.includes('portapacc')) return 'rack';
+      return 'gear';
+    }
+
+    let BIKES = [], activeCategory = 'Tutte', activePrice = 'all', activeBrands = new Set(), activeSort = 'evidenza', compareList = [];
+    const CATEGORIES = ['Tutte', 'MTB', 'E-Bike', 'City Bike', 'Gravel', 'Trekking', 'Corsa', 'Bambino', 'Usato'];
+
+    async function loadBikes() {
+      try {
+        const csvText = await fetchFromSheet();
+        if (csvText) { _bikeCounter = 0; BIKES = parseCSV(csvText).filter(r => (r.Disponibile || '').toUpperCase() === 'SI').map(rawToBike); }
+        else { _bikeCounter = 0; BIKES = DEMO_RAW.map(rawToBike); }
+      } catch (e) { _bikeCounter = 0; BIKES = DEMO_RAW.map(rawToBike); }
+      buildSidebarCats(); buildBrandChecks(); render();
+    }
+    
+    function renderCard(b) {
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>
+                Chiama
+              </a>
+            </div>
+
+            <!-- Toggle specs complete -->
+            <div class="bike-card__specs-toggle">
+              <button class="specs-toggle-btn" aria-expanded="false" aria-controls="specs-${b.id}">
+                <span>Scheda tecnica completa</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="specs-table-wrap" id="specs-${b.id}">
+                <div class="specs-table-inner">
+                  <table class="specs-table" aria-label="Scheda tecnica ${b.nome}">
+                    <tbody>${specsTableHtml}</tbody>
+                  </table>
+                  <div style="margin-top:var(--space-5);padding-top:var(--space-4);border-top:1px solid var(--color-border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;">
+                    <label class="compare-check-wrap">
+                      <input type="checkbox" class="compare-check" data-id="${b.id}" ${inCompare ? 'checked' : ''} aria-label="Aggiungi ${b.nome} al confronto">
+                      Aggiungi al confronto
+                    </label>
+                    <span style="font-size:.7rem;color:var(--color-text-faint)">max 3 bici</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </article>`;
+    }
+
+    /* ─── FILTRAGGIO ──────────────────────────── */
+    function priceInRange(prezzo) {
+      if (activePrice === 'all') return true;
+      if (activePrice === '0-700') return prezzo <= 700;
+      if (activePrice === '700-1500') return prezzo > 700 && prezzo <= 1500;
+      if (activePrice === '1500-3000') return prezzo > 1500 && prezzo <= 3000;
+      if (activePrice === '3000+') return prezzo > 3000;
+      return true;
+    }
+
+    function getFiltered() {
+      return BIKES.filter(b => {
+        const catOk = activeCategory === 'Tutte' || b.categoria === activeCategory;
+        const priceOk = priceInRange(b.prezzo);
+        const brandOk = activeBrands.size === 0 || activeBrands.has(b.marca);
+        return catOk && priceOk && brandOk;
+      });
+    }
+
+    function getSorted(list) {
+      const copy = [...list];
+      if (activeSort === 'evidenza') return copy.sort((a, b) => (b.evidenza ? 1 : 0) - (a.evidenza ? 1 : 0) || a.nome.localeCompare(b.nome, 'it'));
+      if (activeSort === 'az') return copy.sort((a, b) => a.nome.localeCompare(b.nome, 'it'));
+      if (activeSort === 'prezzo-asc') return copy.sort((a, b) => a.prezzo - b.prezzo);
+      if (activeSort === 'prezzo-desc') return copy.sort((a, b) => b.prezzo - a.prezzo);
+      if (activeSort === 'marca') return copy.sort((a, b) => a.marca.localeCompare(b.marca, 'it'));
+      return copy;
+    }
+
+    /* ─── RENDER ──────────────────────────────── */
+    function render() {
+      const list = getSorted(getFiltered());
+      const listEl = document.getElementById('detailList');
+      const countEl = document.getElementById('countLabel');
+      if (countEl) countEl.textContent = `${list.length} bici`;
+
+      if (list.length === 0) {
+        listEl.innerHTML = `
+          <div class="products-empty" style="grid-column:1/-1">
+            <div class="products-empty__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
+            </div>
+            <h3>Nessuna bici trovata</h3>
+            <p>Prova a modificare i filtri o <a href="#" onclick="resetAll(event)" style="color:var(--color-primary)">azzera tutti i filtri</a>.</p>
+          </div>`;
+        return;
+      }
+
+      listEl.innerHTML = list.map(b => renderCard(b)).join('');
+      bindCardEvents();
+    }
+
+    function bindCardEvents() {
+      // Specs toggle
+      document.querySelectorAll('.specs-toggle-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', !expanded);
+          const wrap = document.getElementById(btn.getAttribute('aria-controls'));
+          if (wrap) wrap.classList.toggle('open', !expanded);
+        });
+      });
+
+      // Confronto checkbox
+      document.querySelectorAll('.compare-check').forEach(cb => {
+        cb.addEventListener('change', e => {
+          const id = parseInt(e.target.dataset.id);
+          const bike = BIKES.find(b => b.id === id);
+          if (e.target.checked) {
+            if (compareList.length >= 3) {
+              e.target.checked = false;
+              alert('Puoi confrontare al massimo 3 bici alla volta.');
+              return;
+            }
+            compareList.push(bike);
+          } else {
+            compareList = compareList.filter(b => b.id !== id);
+          }
+          updateCompareBar();
+        });
+      });
+    }
+
+    /* ─── SIDEBAR CATEGORIE ───────────────────── */
+    function buildSidebarCats() {
+      const container = document.getElementById('sidebarCats');
+      const mobilePills = document.getElementById('mobileFilterPills');
+      if (!container) return;
+
+      const cats = CATEGORIES.filter(c => c === 'Tutte' || BIKES.some(b => b.categoria === c));
+      const counts = {};
+      cats.forEach(c => counts[c] = c === 'Tutte' ? BIKES.length : BIKES.filter(b => b.categoria === c).length);
+
+      container.innerHTML = cats.map(c => `
+        <button class="cat-item${c === activeCategory ? ' active' : ''}" data-cat="${c}" aria-pressed="${c === activeCategory}">
+          <span>${c}</span>
+          <span class="cat-count">${counts[c]}</span>
+        </button>
+      `).join('');
+
+      container.querySelectorAll('.cat-item').forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeCategory = btn.dataset.cat;
+          buildSidebarCats();
+          buildMobilePills();
+          render();
+        });
+      });
+
+      // Mobile pills
+      if (mobilePills) {
+        mobilePills.innerHTML = cats.map(c => `
+          <button class="filter-pill${c === activeCategory ? ' active' : ''}" data-cat="${c}" style="display:${window.innerWidth >= 900 ? 'none' : 'inline-flex'}">
+            ${c} <span class="pill-count">${counts[c]}</span>
+          </button>
+        `).join('');
+        mobilePills.querySelectorAll('.filter-pill').forEach(btn => {
+          btn.style.display = '';
+          btn.addEventListener('click', () => {
+            activeCategory = btn.dataset.cat;
+            buildSidebarCats();
+            buildMobilePills();
+            render();
+          });
+        });
+      }
+    }
+
+    function buildMobilePills() {
+      buildSidebarCats();
+    }
+
+    /* ─── SIDEBAR MARCHE ──────────────────────── */
+    function buildBrandChecks() {
+      const container = document.getElementById('brandChecks');
+      if (!container) return;
+      const brands = [...new Set(BIKES.map(b => b.marca))].sort();
+      container.innerHTML = brands.map(br => `
+        <label class="brand-check">
+          <input type="checkbox" ${activeBrands.has(br) ? 'checked' : ''} data-brand="${br}" aria-label="${br}">
+          ${br}
+        </label>
+      `).join('');
+      container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', e => {
+          if (e.target.checked) activeBrands.add(e.target.dataset.brand);
+          else activeBrands.delete(e.target.dataset.brand);
+          render();
+        });
+      });
+    }
+
+    /* ─── PRICE CHIPS ─────────────────────────── */
+    document.querySelectorAll('#priceChips .price-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activePrice = btn.dataset.price;
+        document.querySelectorAll('#priceChips .price-chip').forEach(b => b.classList.toggle('active', b.dataset.price === activePrice));
+        render();
+      });
+    });
+
+    /* ─── SORT ────────────────────────────────── */
+    document.getElementById('detailSort')?.addEventListener('change', e => {
+      activeSort = e.target.value;
+      render();
+    });
+
+    /* ─── RESET ───────────────────────────────── */
+    function resetAll(e) {
+      if (e) e.preventDefault();
+      activeCategory = 'Tutte';
+      activePrice = 'all';
+      activeBrands.clear();
+      document.querySelectorAll('#priceChips .price-chip').forEach(b => b.classList.toggle('active', b.dataset.price === 'all'));
+      buildSidebarCats();
+      buildBrandChecks();
+      render();
+    }
+
+    document.getElementById('resetFiltersBtn')?.addEventListener('click', resetAll);
+
+    /* ─── CONFRONTO ───────────────────────────── */
+    function updateCompareBar() {
+      const bar = document.getElementById('compareBar');
+      const itemsEl = document.getElementById('compareItems');
+      if (!bar || !itemsEl) return;
+
+      itemsEl.innerHTML = compareList.map(b =>
+        `<span class="compare-chip">
+          ${b.nome}
+          <button onclick="removeCompare(${b.id})" aria-label="Rimuovi ${b.nome} dal confronto">✕</button>
+        </span>`
+      ).join('');
+
+      bar.classList.toggle('visible', compareList.length >= 2);
+    }
+
+    window.removeCompare = function(id) {
+      compareList = compareList.filter(b => b.id !== id);
+      const cb = document.querySelector(`.compare-check[data-id="${id}"]`);
+      if (cb) cb.checked = false;
+      updateCompareBar();
+    };
+
+    document.getElementById('openCompareBtn')?.addEventListener('click', openCompareModal);
+    document.getElementById('clearCompareBtn')?.addEventListener('click', () => {
+      compareList = [];
+      document.querySelectorAll('.compare-check').forEach(cb => cb.checked = false);
+      updateCompareBar();
+    });
+
+    /* ─── MODAL CONFRONTO ─────────────────────── */
+    function openCompareModal() {
+      if (compareList.length < 2) return;
+      const modal = document.getElementById('compareModal');
+      const wrap = document.getElementById('compareTableWrap');
+      if (!modal || !wrap) return;
+
+      const rows = [
+        { k:'Categoria', fn: b => b.categoria },
+        { k:'Prezzo', fn: b => `<strong>${b.prezzoLabel}</strong>` },
+        { k:'Rating', fn: b => `${b.rating}/5 (${b.recensioni} rec.)` },
+        { k:'Peso', fn: b => b.specsTable.find(s => s.k === 'Peso')?.v || '—' },
+        { k:'Telaio', fn: b => b.specsTable.find(s => s.k === 'Telaio')?.v || '—' },
+        { k:'Forcella', fn: b => b.specsTable.find(s => s.k === 'Forcella')?.v || '—' },
+        { k:'Cambio', fn: b => b.specsTable.find(s => s.k.includes('Cambio') && !s.k.includes('ant'))?.v || '—' },
+        { k:'Freni', fn: b => b.specsTable.find(s => s.k === 'Freni')?.v || '—' },
+        { k:'Ruote', fn: b => b.specsTable.find(s => s.k === 'Ruote')?.v || '—' },
+        { k:'Pneumatici', fn: b => b.specsTable.find(s => s.k === 'Pneumatici')?.v || '—' },
+        { k:'Disponibilità', fn: b => b.disponibilita.charAt(0).toUpperCase() + b.disponibilita.slice(1) },
+      ];
+
+      const ths = compareList.map(b => `<th>${b.nome}<br><small style="font-family:var(--font-body);font-size:.75rem;font-weight:500;opacity:.6">${b.marca}</small></th>`).join('');
+
+      const trs = rows.map(row => {
+        const vals = compareList.map(b => row.fn(b));
+        const tds = vals.map(v => `<td>${v}</td>`).join('');
+        return `<tr><td>${row.k}</td>${tds}</tr>`;
+      }).join('');
+
+      wrap.innerHTML = `
+        <div style="overflow-x:auto;">
+          <table class="compare-table">
+            <thead><tr><th></th>${ths}</tr></thead>
+            <tbody>${trs}</tbody>
+          </table>
+        </div>
+        <p style="margin-top:var(--space-5);font-size:var(--text-xs);color:var(--color-text-faint);">
+          ⚠️ Dati indicativi — conferma sempre disponibilità e prezzi in negozio.
+        </p>`;
+
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    document.getElementById('closeCompareModal')?.addEventListener('click', () => {
+      document.getElementById('compareModal')?.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+    document.querySelector('.compare-modal__backdrop')?.addEventListener('click', () => {
+      document.getElementById('compareModal')?.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+
+    /* ─── AVVIO ───────────────────────────────── */
+    document.addEventListener('DOMContentLoaded', () => {
+      buildSidebarCats();
+      buildBrandChecks();
+      render();
+    });
+  </script>
+</body>
+
+</html>
